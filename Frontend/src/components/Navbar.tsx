@@ -1,6 +1,5 @@
 import {
-  SignedIn,
-  SignedOut,
+  Show,
   SignInButton,
   SignUpButton,
   UserButton,
@@ -10,19 +9,19 @@ import './Navbar.css'
 export function Navbar() {
   return (
     <nav className="navbar">
-      <div className="navbar-brand">MyApp</div>
+      <div className="navbar-brand">ResumeIQ</div>
       <div className="navbar-auth">
-        <SignedOut>
+        <Show when="signed-out">
           <SignInButton mode="modal">
             <button className="btn btn-ghost">Log in</button>
           </SignInButton>
           <SignUpButton mode="modal">
             <button className="btn btn-primary">Sign up</button>
           </SignUpButton>
-        </SignedOut>
-        <SignedIn>
-          <UserButton afterSignOutUrl="/" />
-        </SignedIn>
+        </Show>
+        <Show when="signed-in">
+          <UserButton />
+        </Show>
       </div>
     </nav>
   )

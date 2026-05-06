@@ -1,19 +1,19 @@
-import { SignedIn, SignedOut } from '@clerk/react'
+import { Show } from '@clerk/react'
 import { Navbar } from './components/Navbar'
 import { LandingPage } from './pages/LandingPage'
-import { Dashboard } from './pages/Dashboard'
+import ResumeAnalyzerApp from './app/App'
 import './App.css'
 
 function App() {
   return (
     <div className="app-layout">
       <Navbar />
-      <SignedOut>
+      <Show when="signed-out">
         <LandingPage />
-      </SignedOut>
-      <SignedIn>
-        <Dashboard />
-      </SignedIn>
+      </Show>
+      <Show when="signed-in">
+        <ResumeAnalyzerApp />
+      </Show>
     </div>
   )
 }
