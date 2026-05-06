@@ -1,0 +1,33 @@
+{
+  "name": "kiro-hackathon-resume-analyzer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm --prefix Backend run start\" \"npm --prefix Frontend run dev\"",
+    "dev:backend": "npm --prefix Backend run start",
+    "dev:frontend": "npm --prefix Frontend run dev",
+    "build": "npm --prefix Backend run build && npm --prefix Frontend run build",
+    "build:backend": "npm --prefix Backend run build",
+    "build:frontend": "npm --prefix Frontend run build",
+    "lint": "npm --prefix Frontend run lint",
+    "preview:frontend": "npm --prefix Frontend run preview",
+    "install:all": "npm install && npm --prefix Backend install && npm --prefix Frontend install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alinaqigit/kiro-hackathon-resume-analyzer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/alinaqigit/kiro-hackathon-resume-analyzer/issues"
+  },
+  "homepage": "https://github.com/alinaqigit/kiro-hackathon-resume-analyzer#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
