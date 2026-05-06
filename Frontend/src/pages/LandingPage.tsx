@@ -1,8 +1,46 @@
 import { SignUpButton } from '@clerk/react'
-import { Sparkles, Zap, Target, TrendingUp } from 'lucide-react'
+import { Sparkles, Zap, Target, TrendingUp, Mail, User, Briefcase } from 'lucide-react'
+import { useState, type FormEvent } from 'react'
 import './LandingPage.css'
 
 export function LandingPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    role: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitMessage(null)
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/waitlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSubmitMessage({ type: 'success', text: 'Thanks! We\'ll be in touch soon.' })
+        setFormData({ name: '', email: '', role: '' })
+      } else {
+        setSubmitMessage({ type: 'error', text: data.error || 'Something went wrong. Please try again.' })
+      }
+    } catch (error) {
+      setSubmitMessage({ type: 'error', text: 'Failed to connect. Please try again.' })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <main className="landing">
       {/* Background blobs */}
@@ -51,6 +89,73 @@ export function LandingPage() {
         <p className="landing-note">
           No credit card required • Takes 5 minutes
         </p>
+
+        {/* Waitlist Form */}
+        <div className="waitlist-section">
+          <h2 className="waitlist-title">Join the Waitlist</h2>
+          <p className="waitlist-subtitle">Get early access and exclusive updates</p>
+          
+          <form onSubmit={handleSubmit} className="waitlist-form">
+            <div className="form-group">
+              <div className="input-wrapper">
+                <User className="input-icon" />
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  disabled={isSubmitting}
+                  className="form-input"
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="input-wrapper">
+                <Mail className="input-icon" />
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  disabled={isSubmitting}
+                  className="form-input"
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="input-wrapper">
+                <Briefcase className="input-icon" />
+                <input
+                  type="text"
+                  placeholder="Target Role (e.g., Frontend Developer)"
+                  value={formData.role}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  required
+                  disabled={isSubmitting}
+                  className="form-input"
+                />
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="btn-submit"
+            >
+              {isSubmitting ? 'Submitting...' : 'Join Waitlist'}
+            </button>
+
+            {submitMessage && (
+              <div className={`submit-message ${submitMessage.type}`}>
+                {submitMessage.text}
+              </div>
+            )}
+          </form>
+        </div>
       </div>
     </main>
   )
